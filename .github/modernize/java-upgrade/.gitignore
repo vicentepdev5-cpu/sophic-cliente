@@ -1,0 +1,7 @@
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+hs_err_pid*
+.DS_Store
+.settings/
+.vscode/
+*.class
