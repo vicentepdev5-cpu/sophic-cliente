@@ -40,6 +40,26 @@ public class ClienteController {
         }
     }
 
+    @GetMapping("/clientes/{id}")
+    @ResponseBody
+    public ResponseEntity<Cliente> retornaUnClientePorSuId(@RequestHeader("X-Rol-Empleado") String rol, @PathVariable Integer id){
+        if(!rol.equals("1") && !rol.equals("2")){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // Retorna 403 por falta de permisos
+        }
+        
+        try{
+            Cliente clienteEncontrado = clienteSer.buscarClientePorId(id); 
+            
+            if(clienteEncontrado != null){
+                return ResponseEntity.ok(clienteEncontrado); // Retorna 200 con los datos del cliente
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 si el ID no existe en la BD
+            }
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @PostMapping("/clientes")
     @ResponseBody
     public ResponseEntity <Cliente> crearUnCliente(@RequestHeader ("X-Rol-Empleado")String rol, @RequestBody Cliente nuevoCliente){
